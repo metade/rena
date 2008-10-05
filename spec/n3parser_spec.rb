@@ -60,10 +60,18 @@ describe "N3 parser" do
   end
   
   it "should create typed literals" do
-    # n3doc = "<http://example.org/joe> <http://xmlns.com/foaf/0.1/name> \"Joe\"^^<http://www.w3.org/2001/XMLSchema#string> ."
-    # parser = N3Parser.new(n3doc)
-    # parser.graph[0].object.classs.should == Rena::Literal
-    pending
+    n3doc = "<http://example.org/joe> <http://xmlns.com/foaf/0.1/name> \"Joe\"^^<http://www.w3.org/2001/XMLSchema#string> ."
+    parser = N3Parser.new(n3doc)
+    parser.graph[0].object.class.should == Rena::Literal
+    parser.graph[0].object.encoding.value.should == 'http://www.w3.org/2001/XMLSchema#string'
+  end
+  
+  it "should create literals with language encodings" do
+    n3doc = "<http://example.org/joe> <http://xmlns.com/foaf/0.1/name> \"Joe\"@en ."
+    parser = N3Parser.new(n3doc)
+    parser.graph[0].object.class.should == Rena::Literal
+    parser.graph[0].object.encoding.class.should == Rena::Literal::Language
+    parser.graph[0].object.encoding.value.should == 'en'
   end
 
   def test_file(filepath)
