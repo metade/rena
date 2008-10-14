@@ -75,7 +75,6 @@ module Rena
             # we have an element with a relative URI
             if (element.base?)
               # the element has a base URI, use that to build the URI
-              value = "##{value}" if (value[0..0].to_s != "#")
               value = "#{element.base}#{value}"
             elsif (!@uri.nil?)
               # we can use the document URI to build the URI for the element

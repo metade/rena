@@ -32,7 +32,27 @@ describe "RDF/XML Parser" do
     graph = RdfXmlParser.new(sampledoc)
     graph.is_rdf?.should == true
     graph.graph.size == 6
-#    print graph.graph.to_ntriples
+    # print graph.graph.to_ntriples
+  end
+  
+  it "should be able to parse a slash-namespace RDF document" do
+    sampledoc = <<-EOF;
+    <?xml version="1.0" ?>
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ex="http://www.example.org/" xml:lang="en" xml:base="http://www.example.org/foo/">
+      <rdf:Description rdf:about="Bar">
+        <ex:belongsTo rdf:resource="http://tommorris.org/" />
+      </rdf:Description>
+    </rdf:RDF>
+    EOF
+    triples = <<-EOF;
+    <http://www.example.org/foo/Bar> <http://www.example.org/belongsTo> <http://tommorris.org/> .
+    EOF
+    triples.strip!
+    
+    parser = RdfXmlParser.new(sampledoc)
+    parser.is_rdf?.should == true
+    parser.graph.to_ntriples.should == triples
   end
 
   it "should raise an error if rdf:aboutEach is used, as per the negative parser test rdfms-abouteach-error001 (rdf:aboutEach attribute)" do
