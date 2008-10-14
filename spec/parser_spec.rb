@@ -293,7 +293,7 @@ describe "RDF/XML Parser" do
       parser = RdfXmlParser.new(n3_string, uri)
       ntriples = parser.graph.to_ntriples
       ntriples.gsub!(/_:bn\d+/, '_:node1')
-      ntriples = ntriples.split("\n").sort
+      ntriples = ntriples.split("\n").find_all { |t| !t.blank? }.sort
       
       nt_string = File.read(filepath.sub('.rdf', '.nt'))
       nt_string = nt_string.split("\n").sort
@@ -305,10 +305,10 @@ describe "RDF/XML Parser" do
       @rdf_dir = File.join(File.dirname(__FILE__), '..', 'test', 'rdf_tests')
     end
     
-    # it "should parse Coldplay's BBC Music profile" do
-    #   gid = 'cc197bad-dc9c-440d-a5b5-d52ba2e14234'
-    #   file = File.join(@rdf_dir, "#{gid}.rdf")
-    #   test_file(file, "http://www.bbc.co.uk/music/artists/#{gid}")
-    # end 
+    it "should parse Coldplay's BBC Music profile" do
+      gid = 'cc197bad-dc9c-440d-a5b5-d52ba2e14234'
+      file = File.join(@rdf_dir, "#{gid}.rdf")
+      test_file(file, "http://www.bbc.co.uk/music/artists/#{gid}")
+    end
   end
 end

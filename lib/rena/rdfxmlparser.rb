@@ -133,8 +133,8 @@ module Rena
       # type parsing
       if (resource == true or element.attributes.has_key? 'about')
         type = URIRef.new(element.namespace + element.name)
-        unless type.to_s == RDF_TYPE
-          @graph.add_triple(subject, RDF_DESCRIPTION, type)
+        unless type.to_s == RDF_DESCRIPTION
+          @graph.add_triple(subject, RDF_TYPE, type)
         end
       end
       
